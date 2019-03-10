@@ -1,0 +1,19 @@
+The watch command runs a given command repeatedly and displays the output, refreshing the screen with each interval
+The basic syntax of watch is
+
+watch [option(s)] command
+------------------------------------
+
+***********Some example**************
+
+Watching a file download
+
+watch -n 0.5 ls -a /isos
+The -n option sets the interval at which the screen refreshes in seconds
+------------------------------------
+Watching a network interface come up
+
+watch -n 0.5 ip a
+------------------------------------
+Showing the most CPU intensive processes
+
