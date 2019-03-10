@@ -1,0 +1,29 @@
+open the Windows Services app: services.msc
+Remote Desktop Connection: mstsc
+system information: msinfo32
+Backup and Restore window: sdclt
+The Computer Management app: compmgmt.msc
+open the Windows Disk Cleanup utility: cleanmgr
+Windows Event Viewer: eventvwr.msc
+open Control Panel: control
+Microsoft Management Console: mmc
+open resoucre monitor: resmon
+open C dirver: \
+open current user's home folder: .
+open current user's folder locate in C dirver: ..
+open calculator app: calc
+open command prompt: cmd
+open power shell: powershell
+open User Accounts panel: netplwiz
+open Authorization Manager: azman.msc
+open Group Policy Editor: gpedit.msc
+open Local Users and Groups: lusrmgr.msc
+access all your Network Adapters: ncpa.cpl
+Performance Monitor: perfmon.msc
+Power Options: powercfg.cpl
+access the Programs and Features window: appwiz.cpl
+Windows Device Manager: devmgmt.msc
+window registry: regedit
+Windows System Configuration: msconfig
+System Properties window: sysdm.cpl
+access the Firewall window: firewall.cpl
