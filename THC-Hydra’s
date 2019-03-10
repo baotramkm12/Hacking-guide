@@ -1,0 +1,62 @@
+RDP: Remote Desktop Protocol
+hydra -t 4 -V -f -l administrator -P rockyou.txt rdp://192.168.34.16
+
+-t 4 This sets the number of tasks that can run parallel together in this example I have used 4 which will send 4 logins at a time. RDP does not like too many connections at the same time so try and keep it at a maximum of 4. It is sometimes worth adding a -w to your command to add a wait between attempts.
+-V – Verbose this shows you which usernames and passwords on screen as it’s working.
+-f  Quits once you have found a positive Username and Password match.
+-l administrator – Use the username administrator to attempt to login.
+-P rockyou.txt– This is the word list that we will be pulling passwords from.
+rdp://192.168.34.16 – This is the service we want to attack and the IP address.
+
+------------------------------------------------------------------------------------
+
+FTP: File Transfer Protocol
+hydra -t 5 -V -f -L userlist -P passwordlist ftp://192.168.34.16
+
+-t 5 this sets the number of tasks or logins it will try simultaneously. I have gone for 5 here but just remember don’t go too high as it may give you false results.
+-V Verbose this will display the login and password it tries in the terminal for each attempt/
+-f Quits once hydra has found a positive Username and Password match.
+-L userlist The capital -L  here means I’m using a wordlist of usernames called userlist if a -l was used this specifies a single username to try.
+-P passwordlist The capital -P here means I’m using a word list called passwordlist if a -p was used this specifies a single password to try.
+ftp://192.168.34.16 This is the service we want to attack and the IP address of the FTP server
+
+--------------------------------------------------------------------------------------
+
+VNC
+hydra -P passwordlist -t 1 -w 5 -f -s 5901 192.168.100.155 vnc -v
+
+-P passwordlist The capital -P here means I’m using a word list called passwordlist if a -p was used this specifies a single password to try.
+-t 1 This sets the number of tasks or logins it will try simultaneously. I have gone for 1 here but just remember don’t go higher than 4 for brute forcing VNC.
+-w 5 This sets the wait time between tries I have gone for 5 here but remember to go a lot higher if the blacklisting feature is still enabled
+-f Quits once hydra has found a positive Password match.
+-s 5901 This changes the default port for hydra to connect to the VNC server from 5900 to 5901 which was what my VNC server defaulted to.
+192.168.100.155 vnc This specifies the IP address of the VNC server and the service we want to attack.
+-v Verbose this will display the password it tries in the terminal for each attempt.
+
+------------------------------------------------------------------------------------------
+
+SSH: secure shell
+hydra -l admin -P passwordlist ssh://192.168.100.155 -V
+
+-l admin The small l here states that I am going to specify a username use a capital L if you are going to specify a user list.
+-P passwordlist The capital P here says I’m going to be specifying a list of passwords in a file called passwordlist.
+ssh://192.168.100.155 This is the service we want to attack and the IP address of the SSH server.
+-V Verbose this will display the login and password it tries in the terminal for each attempt.
+
+---------------------------------------------------------------------------------------------
+
+Webpage Login
+hydra 192.168.100.155 -V -l admin -P passwordlist http-get-form "/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=rjevaetqb3dqbj1ph3nmjchel2; security=low"
+
+192.168.100.155 The target IP address of the server hosting the webpage
+-V Verbose this will display the login and password it tries in the terminal for each attempt.
+-l admin The small l here states that I am going to specify a username use a capital L if you are going to specify a user list.
+-P passwordlist The capital P here says I’m going to be specifying a list of passwords in a file called passwordlist.
+http-get-form Tells hydra that you are going to be using the http-get-form module.
+/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login All these details were found in our tamper data request that we copied to our text editor.
+F=Username and/or password incorrect. This is the failed login message we received from the DVWA login page, this tells hydra when it’s not received we have a valid login.
+H=Cookie: PHPSESSID=rjevaetqb3dqbj1ph3nmjchel2; security=low This is the Cookie we were issued when we logged into the DVWA site at the start also found in the Tamper Data.
+
+
+
+
