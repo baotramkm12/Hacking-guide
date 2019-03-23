@@ -57,6 +57,24 @@ http-get-form Tells hydra that you are going to be using the http-get-form modul
 F=Username and/or password incorrect. This is the failed login message we received from the DVWA login page, this tells hydra when it’s not received we have a valid login.
 H=Cookie: PHPSESSID=rjevaetqb3dqbj1ph3nmjchel2; security=low This is the Cookie we were issued when we logged into the DVWA site at the start also found in the Tamper Data.
 
+hydra -s 7654 -l pinky -P Desktop/Pinky_Place2/cewl_total.txt pinkydb http-post-form “/login.php:user=^USER^&pass=^PASS^:F=Invalid” -e ns -t 1 -w 5 -W 1 -vV
 
+-s — This option specifies the specific port to use. By default for http-form-post, and http-form-get, hydra uses port 80. In my example the website I am logging into is on port 7654 so I specify that.
+-l — This specifies the username to try to login with. If you have a list of usernames you would like to try just use -L instead of -l.
+-P — Define the wordlist you would like to use for your brute force vector.
+pinkydb — This defines the host name. The website I am using has a defined DNS host name that I must use. In most lab cases you simply put the IP of the machine your testing. In the real world you would put the DNS name, something like ‘youtube.com’ their.
+http-post-form — Define what type of service you are using, ssh, ftp, POP3, etc. Hydra supports a variety of services, but our previous reconnaissance shows that the login type is a POST form. So we use that.
+"/login.php:user=^USER^&pass=^PASS^:F=Invalid" — This next part takes more explaining.
 
+First you define the directory that leads to the login page. Example, my full URL is as follows: http://pinkydb:7654/login.php. We already defined the host and port so we just need to define the directory path to the login page. Simply /login.php
+Next we define the actual Request arguments being passed. (Use those variables you found during your login page reconnaissance!).
+The ^USER^ and ^PASS^ must be used so hydra knows where to paste the username and password.
+Last statement tells hydra how to identify a success, or failure. In my case I use ‘F=’ to tell hydra, if you find the string ‘Invalid’ in the web page after an attempted login, then we have FAILED to login. You can also use ‘S=’ to define success strings instead of failure strings. If you want to use content length as your definition, you would look for the content length header string like so, ‘F=Content-Length\: 545’. You can also check if a redirect happens, but ill leave that one to you as HW. Understanding headers makes you very string in web brute forcing ;D
+-e ns — Tells hydra to try ‘null’ logins aka no password
+-t — Defines number of threads to be used. I like to use 1 because I know 100% the next attempt will happen after the previous, I know no request will get mixed up or lost.
+-w — Defines time hydra will wait for a response from the web site
+-W — Time hydra will wait before sending the next request after the previous has executed.
+-vV — EXTRA VERBOSE!!! Shows every attempted login tried by hydra.
+(OPTIONAL) -D — enables debugging mode. Turn this on just to see what happens trustf you will learn a lot ;D
 
+link for reference: http://insidetrust.blogspot.com/2011/08/using-hydra-to-dictionary-attack-web.html
